@@ -12,10 +12,16 @@ npm install
 
 ## 🎯 Motivation
 
+- Develop applications that are easy to maintain.
+- Reduce the bugs and facilitate their detection.
+- Distinguish good and bad programming practices.
+
 ### 📚 Documentation
 
-- [Workflows for develop, test and deploy](./docs/workflows.md)
-- [VS code Settings and Extensions](./docs/settings.md)
+- [Workflows for develop, test and deploy the practice](./docs/workflows.md)
+- [VS code Settings and Extensions for clean typescript](./docs/settings.md)
+- [Article series](./docs/articles.md)
+- [Artesano del código](./docs/artesano/index.md)
 
 ---
 
