@@ -1,20 +1,20 @@
 {
-  "name": "quark",
-  "version": "2.1.1",
-  "description": "Fundamental project template",
+  "name": "clean-dev",
+  "version": "2023.4.1",
+  "description": "Clean Code course material (demo and docs)",
   "author": {
     "name": "Alberto Basalo",
     "email": "albertobasalo@hotmail.com",
     "url": "https://albertobasalo.dev"
   },
-  "homepage": "https://github.com/AlbertoBasalo/quark#readme",
+  "homepage": "https://github.com/AlbertoBasalo/clean-dev#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlbertoBasalo/quark.git"
+    "url": "git+https://github.com/AlbertoBasalo/clean-dev.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AlbertoBasalo/quark/issues"
+    "url": "https://github.com/AlbertoBasalo/clean-dev/issues"
   },
   "type": "module",
   "scripts": {
