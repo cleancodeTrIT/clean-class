@@ -20,7 +20,7 @@ export type Activity = {
   userId: Id;
 };
 
-export const ACTIVITY_EMPTY: Activity = {
+export const EMPTY_ACTIVITY: Activity = {
   title: "No title",
   description: "No description",
   date: "2023-01-01",
