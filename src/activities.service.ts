@@ -31,15 +31,27 @@ export class ActivitiesService {
     return this.activitiesRepository.create(newActivity);
   }
 
+  updateActivity(id: Id, input: Partial<Activity>): Activity {
+    const activity = this.activitiesRepository.readById(id);
+    if (activity === undefined) throw new Error("Activity to update not found:" + id);
+    let updatedActivity: Activity | undefined = {
+      ...activity,
+      ...input,
+    };
+    updatedActivity = this.activitiesRepository.update(updatedActivity);
+    if (updatedActivity === undefined) throw new Error("Activity to update not found:" + activity.id);
+    return updatedActivity;
+  }
+
   publishActivity(id: Id): Activity {
     const activity = this.activitiesRepository.readById(id);
     if (activity === undefined) throw new Error("Activity to publish not found:" + id);
     if (activity.state !== "draft") throw new Error("Activity is not a draft");
-    const publishedActivity: Activity = {
+    let updatedActivity: Activity | undefined = {
       ...activity,
       state: "published",
     };
-    const updatedActivity = this.activitiesRepository.update(publishedActivity);
+    updatedActivity = this.activitiesRepository.update(updatedActivity);
     if (updatedActivity === undefined) throw new Error("Activity to update not found:" + activity.id);
     return updatedActivity;
   }

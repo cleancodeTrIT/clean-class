@@ -23,7 +23,7 @@
     "test": "jest --coverage",
     "build": "tsc -p tsconfig.json",
     "dev": "ts-node ./src/main.ts",
-    "watch": "jest --watch",
+    "watch": "jest --watch --verbose=false",
     "ts-node": "ts-node",
     "format": "prettier --write \"./**/*.{ts,json}\"",
     "lint": "eslint src --ext .ts",
@@ -47,15 +47,14 @@
     "npm-check-updates": "^16.10.8",
     "prettier": "^2.8.7",
     "standard-version": "^9.5.0",
+    "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1"
   },
   "dependencies": {
     "typescript": "^5.0.4"
   },
   "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "esbuild-jest"
-    },
+    "preset": "ts-jest",
     "moduleNameMapper": {
       "@ab/(.*)": "<rootDir>/src/$1"
     },

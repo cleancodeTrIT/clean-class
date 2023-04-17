@@ -105,6 +105,24 @@ describe("Publish Activity Use Case", () => {
   });
 });
 
+// Update Activity Use Case
+describe("Update Activity Use Case", () => {
+  let activity: Activity;
+  describe("When logged in as an agency", () => {
+    beforeEach(() => {
+      sut = new ActivitiesService();
+      activity = sut.createActivity(inputActivity);
+    });
+    // should update an activity
+    it("should update an activity", () => {
+      const updatedActivity = sut.updateActivity(activity.id, {
+        maxParticipants: 5,
+      });
+      expect(updatedActivity.maxParticipants).toEqual(5);
+    });
+  });
+});
+
 // Book Activity Use Case
 describe("Book Activity Use Case", () => {
   let activity: Activity;
@@ -133,6 +151,15 @@ describe("Book Activity Use Case", () => {
         sut.bookActivity(inputBooking);
       }).toThrow();
     });
-    // ToDo: should throw when activity is full
+    // should throw when activity is full
+    it("should throw when activity is full", () => {
+      sut.publishActivity(activity.id);
+      for (let i = 0; i < activity.maxParticipants; i++) {
+        sut.bookActivity(inputBooking);
+      }
+      expect(() => {
+        sut.bookActivity(inputBooking);
+      }).toThrow();
+    });
   });
 });

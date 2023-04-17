@@ -1,16 +1,27 @@
-export { sayHello, sum };
+import { ActivitiesService } from "./activities.service";
+import { CreateActivityDTO } from "./models/create-activity.dto";
 
-function sayHello(yourName: string): string {
-  const helloMessage = `Hello ${yourName}`;
-  console.log(helloMessage);
-  return helloMessage;
-}
-function sum(a: number, b: number): number {
-  if (a == 0) {
-    return b;
-  }
-  return a + b;
-}
-const myName = "Quark!";
-sayHello(myName);
-console.log(sum(1, 2));
+// create an activity
+const agencyId = "diving-agency";
+const inputActivity: CreateActivityDTO = {
+  organizerId: agencyId,
+  title: "Dive in the sea",
+  location: "Malta",
+  date: "2025-08-15",
+  price: 100,
+};
+const activitiesService = new ActivitiesService();
+const activity = activitiesService.createActivity(inputActivity);
+console.log("Created activity: ", activity);
+// book an activity
+const customerId = "customer";
+const inputBooking = {
+  activityId: activity.id,
+  customerId,
+  places: 1,
+};
+const booking = activitiesService.bookActivity(inputBooking);
+console.log("Created booking: ", booking);
+// list activities
+const activities = activitiesService.activitiesRepository.read();
+console.log("Activities: ", activities);
