@@ -1,6 +1,8 @@
 import { ActivitiesService } from "./activities.service";
+import { GenericRepository } from "./generic.repository";
 import { Activity } from "./models/activity.type";
 import { BookActivityDTO } from "./models/book-activity.dto";
+import { Booking } from "./models/booking.type";
 import { CreateActivityDTO } from "./models/create-activity.dto";
 
 let sut: ActivitiesService;
@@ -9,21 +11,21 @@ const customerId = "customer";
 const inputActivity: CreateActivityDTO = {
   organizerId: agencyId,
   title: "Dive in the sea",
-  location: "Malta",
+  location: "Punta Cana",
   date: "2025-08-15",
   price: 100,
 };
 const inputActivityPast: CreateActivityDTO = {
   organizerId: agencyId,
   title: "Dive in the sea",
-  location: "Malta",
+  location: "Punta Cana",
   date: "2020-08-15",
   price: 100,
 };
 const inputActivityNegative: CreateActivityDTO = {
   organizerId: agencyId,
   title: "Dive in the sea",
-  location: "Malta",
+  location: "Punta Cana",
   date: "2025-08-15",
   price: -100,
 };
@@ -32,21 +34,22 @@ const inputBooking: BookActivityDTO = {
   customerId,
   places: 1,
 };
-
+const activitiesRepository = new GenericRepository<Activity>();
+const bookingsRepository = new GenericRepository<Booking>();
 // TDD for Create Activity Use Case
 
 // Create Activity Use Case
 describe("Create Activity Use Case", () => {
   describe("When logged in as an agency", () => {
     beforeEach(() => {
-      sut = new ActivitiesService();
+      sut = new ActivitiesService(activitiesRepository, bookingsRepository);
     });
     // should create an activity based on a basic object with title, price, location, and date,
     it("should create an activity based on a basic object", () => {
       const actual = sut.createActivity(inputActivity);
       const expected: Partial<Activity> = {
         title: "Dive in the sea",
-        location: "Malta",
+        location: "Punta Cana",
         date: "2025-08-15",
         price: 100,
         organizerId: agencyId,
@@ -81,7 +84,7 @@ describe("Publish Activity Use Case", () => {
   let activity: Activity;
   describe("When logged in as an agency", () => {
     beforeEach(() => {
-      sut = new ActivitiesService();
+      sut = new ActivitiesService(activitiesRepository, bookingsRepository);
       activity = sut.createActivity(inputActivity);
     });
     // should publish an activity
@@ -110,7 +113,7 @@ describe("Update Activity Use Case", () => {
   let activity: Activity;
   describe("When logged in as an agency", () => {
     beforeEach(() => {
-      sut = new ActivitiesService();
+      sut = new ActivitiesService(activitiesRepository, bookingsRepository);
       activity = sut.createActivity(inputActivity);
     });
     // should update an activity
@@ -128,7 +131,7 @@ describe("Book Activity Use Case", () => {
   let activity: Activity;
   describe("When logged in as a customer", () => {
     beforeEach(() => {
-      sut = new ActivitiesService();
+      sut = new ActivitiesService(activitiesRepository, bookingsRepository);
       activity = sut.createActivity(inputActivity);
       inputBooking.activityId = activity.id;
     });

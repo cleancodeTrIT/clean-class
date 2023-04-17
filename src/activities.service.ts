@@ -7,8 +7,10 @@ import { Id } from "./models/id.type";
 import { getSlug } from "./util.functions";
 
 export class ActivitiesService {
-  activitiesRepository = new GenericRepository<Activity>();
-  bookingRepository = new GenericRepository<Booking>();
+  constructor(
+    private activitiesRepository: GenericRepository<Activity>,
+    private bookingRepository: GenericRepository<Booking>
+  ) {}
 
   createActivity(input: CreateActivityDTO): Activity {
     if (new Date(input.date) < new Date()) {

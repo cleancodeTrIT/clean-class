@@ -43,5 +43,5 @@ export function getSlug(source: string): string {
   return source
     .toLowerCase()
     .replace(/\s+/g, "-")
-    .replace(/[^a-zA-Z0-9_-]/g, "");
+    .replace(/[^a-zA-Z0-9_-]/g, "_");
 }
