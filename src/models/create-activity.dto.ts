@@ -6,4 +6,6 @@ export type CreateActivityDTO = {
   location: string;
   date: string;
   price: number;
+  capacity?: number;
+  quorum?: number;
 };

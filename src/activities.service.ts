@@ -4,6 +4,7 @@ import { BookActivityDTO } from "./models/book-activity.dto";
 import { Booking } from "./models/booking.type";
 import { CreateActivityDTO } from "./models/create-activity.dto";
 import { Id } from "./models/id.type";
+import { UpdateActivityDTO } from "./models/update-activity.dto";
 import { getSlug } from "./util.functions";
 
 export class ActivitiesService {
@@ -22,8 +23,8 @@ export class ActivitiesService {
     const newActivity: Activity = {
       ...input,
       currency: "EUR",
-      minParticipants: 1,
-      maxParticipants: 10,
+      quorum: 1,
+      capacity: 10,
       description: "No description",
       ageCategory: "adult",
       state: "draft",
@@ -33,7 +34,7 @@ export class ActivitiesService {
     return this.activitiesRepository.create(newActivity);
   }
 
-  updateActivity(id: Id, input: Partial<Activity>): Activity {
+  updateActivity(id: Id, input: UpdateActivityDTO): Activity {
     const activity = this.activitiesRepository.readById(id);
     if (activity === undefined) throw new Error("Activity to update not found:" + id);
     let updatedActivity: Activity | undefined = {
@@ -68,13 +69,13 @@ export class ActivitiesService {
     const places = input.places;
     const currentBookingsForActivity = this.bookingRepository.readByField("activityId", input.activityId);
     const currentBookingsCount = currentBookingsForActivity.length;
-    const availablePlaces = activity.maxParticipants - currentBookingsCount;
+    const availablePlaces = activity.capacity - currentBookingsCount;
     if (input.places > availablePlaces) {
       throw new Error("Not enough places left: " + availablePlaces + " places left");
     }
     const newBooking: Booking = { ...input, places, id: 0, state: "pending" };
     const createdBooking = this.bookingRepository.create(newBooking);
-    if (currentBookingsCount + places >= activity.minParticipants) {
+    if (currentBookingsCount + places >= activity.quorum) {
       activity.state = "confirmed";
       this.activitiesRepository.update(activity);
     }

@@ -119,9 +119,9 @@ describe("Update Activity Use Case", () => {
     // should update an activity
     it("should update an activity", () => {
       const updatedActivity = sut.updateActivity(activity.id, {
-        maxParticipants: 5,
+        ageCategory: "family",
       });
-      expect(updatedActivity.maxParticipants).toEqual(5);
+      expect(updatedActivity.ageCategory).toEqual("family");
     });
   });
 });
@@ -157,7 +157,7 @@ describe("Book Activity Use Case", () => {
     // should throw when activity is full
     it("should throw when activity is full", () => {
       sut.publishActivity(activity.id);
-      for (let i = 0; i < activity.maxParticipants; i++) {
+      for (let i = 0; i < activity.capacity; i++) {
         sut.bookActivity(inputBooking);
       }
       expect(() => {

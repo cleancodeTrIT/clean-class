@@ -1,5 +1,3 @@
-//  * Sample types
-
 import { ActivityState } from "./activity-state.type";
 import { AgeCategory } from "./age-category.type";
 import { Id } from "./id.type";
@@ -13,8 +11,8 @@ export type Activity = {
   price: number;
   currency: string;
   ageCategory: AgeCategory;
-  maxParticipants: number;
-  minParticipants: number;
+  capacity: number;
+  quorum: number;
   description: string;
   slug: string;
   state: ActivityState;
@@ -29,8 +27,8 @@ export const EMPTY_ACTIVITY: Activity = {
   price: 0,
   currency: "",
   ageCategory: "adult",
-  maxParticipants: 0,
-  minParticipants: 0,
+  capacity: 0,
+  quorum: 0,
   description: "",
   slug: "",
   state: "draft",
