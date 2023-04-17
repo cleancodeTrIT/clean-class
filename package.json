@@ -16,7 +16,6 @@
   "bugs": {
     "url": "https://github.com/AlbertoBasalo/clean-dev/issues"
   },
-  "type": "module",
   "scripts": {
     "prestart": "npm run build",
     "start": "node ./dist/main.js",
@@ -54,7 +53,9 @@
     "typescript": "^5.0.4"
   },
   "jest": {
-    "preset": "ts-jest",
+    "transform": {
+      "^.+\\.tsx?$": "esbuild-jest"
+    },
     "moduleNameMapper": {
       "@ab/(.*)": "<rootDir>/src/$1"
     },

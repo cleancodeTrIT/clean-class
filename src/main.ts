@@ -12,6 +12,7 @@ const inputActivity: CreateActivityDTO = {
 };
 const activitiesService = new ActivitiesService();
 const activity = activitiesService.createActivity(inputActivity);
+activitiesService.publishActivity(activity.id);
 console.log("Created activity: ", activity);
 // book an activity
 const customerId = "customer";
@@ -25,3 +26,6 @@ console.log("Created booking: ", booking);
 // list activities
 const activities = activitiesService.activitiesRepository.read();
 console.log("Activities: ", activities);
+// list bookings
+const bookings = activitiesService.bookingRepository.read();
+console.log("Bookings: ", bookings);
