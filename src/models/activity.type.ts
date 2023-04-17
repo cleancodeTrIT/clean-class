@@ -5,33 +5,33 @@ import { AgeCategory } from "./age-category.type";
 import { Id } from "./id.type";
 
 export type Activity = {
-  ageCategory: AgeCategory;
-  currency: string;
-  date: string;
-  description: string;
   id: Id;
+  organizerId: Id;
+  title: string;
   location: string;
+  date: string;
+  price: number;
+  currency: string;
+  ageCategory: AgeCategory;
   maxParticipants: number;
   minParticipants: number;
-  price: number;
+  description: string;
   slug: string;
   state: ActivityState;
-  title: string;
-  userId: Id;
 };
 
 export const EMPTY_ACTIVITY: Activity = {
-  title: "No title",
-  description: "No description",
-  date: "2023-01-01",
   id: 0,
-  location: "No location",
+  organizerId: 0,
+  title: "",
+  location: "",
+  date: "",
+  price: 0,
+  currency: "",
+  ageCategory: "adult",
   maxParticipants: 0,
   minParticipants: 0,
-  price: 0,
-  slug: "no-slug",
+  description: "",
+  slug: "",
   state: "draft",
-  userId: 0,
-  ageCategory: "adult",
-  currency: "EUR",
 };

@@ -1,22 +1,23 @@
 import { GenericRepository } from "./generic.repository";
 import { Activity } from "./models/activity.type";
+import { BookActivityDTO } from "./models/book-activity.dto";
 import { Booking } from "./models/booking.type";
+import { CreateActivityDTO } from "./models/create-activity.dto";
 import { Id } from "./models/id.type";
+import { getSlug } from "./util.functions";
 
 export class ActivitiesService {
-  // ToDo: have a repository to store activities
   activitiesRepository = new GenericRepository<Activity>();
   bookingRepository = new GenericRepository<Booking>();
-  constructor(private userId: Id) {}
 
-  createActivity(input: { title: string; location: string; date: string; price: number }): Activity {
+  createActivity(input: CreateActivityDTO): Activity {
     if (new Date(input.date) < new Date()) {
       throw new Error("Date is in the past");
     }
     if (input.price < 0) {
       throw new Error("Price is negative");
     }
-    const createdActivity: Activity = {
+    const newActivity: Activity = {
       ...input,
       currency: "EUR",
       minParticipants: 1,
@@ -24,32 +25,45 @@ export class ActivitiesService {
       description: "No description",
       ageCategory: "adult",
       state: "draft",
-      slug: this.getSlug(input.title),
-      userId: this.userId,
+      slug: getSlug(input.title),
       id: 0,
     };
-    return this.activitiesRepository.create(createdActivity);
+    return this.activitiesRepository.create(newActivity);
   }
 
-  bookActivity(input: { activityId: number }) {
-    const activity = this.activitiesRepository.read(input.activityId);
-    if (activity === undefined) throw new Error("Activity not found");
-    if (activity.state !== "published") {
+  publishActivity(id: Id): Activity {
+    const activity = this.activitiesRepository.readById(id);
+    if (activity === undefined) throw new Error("Activity to publish not found:" + id);
+    if (activity.state !== "draft") throw new Error("Activity is not a draft");
+    const publishedActivity: Activity = {
+      ...activity,
+      state: "published",
+    };
+    const updatedActivity = this.activitiesRepository.update(publishedActivity);
+    if (updatedActivity === undefined) throw new Error("Activity to update not found:" + activity.id);
+    return updatedActivity;
+  }
+
+  bookActivity(input: BookActivityDTO): Booking {
+    const activity = this.activitiesRepository.readById(input.activityId);
+    if (activity === undefined) throw new Error("Activity not found: " + input.activityId);
+    if (activity.state !== "published" && activity.state !== "confirmed") {
       throw new Error("Activity is not published");
     }
-    const countBookingsForActivity = this.bookingRepository
-      .readAll()
-      .filter((b) => b.activityId === input.activityId).length;
-    if (countBookingsForActivity >= activity.maxParticipants) {
-      throw new Error("Activity is full");
+    if (input.places === undefined || input.places <= 0) input.places = 1;
+    const places = input.places;
+    const currentBookingsForActivity = this.bookingRepository.readByField("activityId", input.activityId);
+    const currentBookingsCount = currentBookingsForActivity.length;
+    const availablePlaces = activity.maxParticipants - currentBookingsCount;
+    if (input.places > availablePlaces) {
+      throw new Error("Not enough places left: " + availablePlaces + " places left");
     }
-    const booking: Booking = { ...input, id: 0, customerId: this.userId, places: 1, state: "pending" };
-    return this.bookingRepository.create(booking);
-  }
-
-  // ToDo: move to an utility function module
-
-  private getSlug(title: string): string {
-    return title.toLowerCase().replace(/ /g, "-");
+    const newBooking: Booking = { ...input, places, id: 0, state: "pending" };
+    const createdBooking = this.bookingRepository.create(newBooking);
+    if (currentBookingsCount + places >= activity.minParticipants) {
+      activity.state = "confirmed";
+      this.activitiesRepository.update(activity);
+    }
+    return createdBooking;
   }
 }
