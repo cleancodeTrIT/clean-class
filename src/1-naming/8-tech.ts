@@ -1,8 +1,8 @@
 // ❌
-function getEmployeeArray(paramCompanyNameString: string) {
+function getEmployees(companyName: string) {
   // 🤢 too much technique and little business
-  return findInMongo(paramCompanyNameString);
+  return findByCompanyName(companyName);
 }
-function findInMongo(paramCompanyNameString: string) {
-  console.log("findInMongo", paramCompanyNameString);
+function findByCompanyName(companyName: string) {
+  console.log("findInMongo", companyName);
 }
