@@ -18,27 +18,24 @@ export class IdGenerator {
 
   constructor(totalLength = 14) {
     if (totalLength < IdGenerator.timestampMinLength) {
-      throw new Error(
-        `The total length of the generated ID must be at least ${IdGenerator.timestampMinLength} characters long.`
-      );
+      throw new Error(`The ID must be at least ${IdGenerator.timestampMinLength} characters long.`);
     }
     this.discriminatorLength = totalLength - IdGenerator.timestampMinLength;
     this.hasDiscriminator = this.discriminatorLength > 0;
     this.timestampLength = totalLength - this.discriminatorLength;
     this.maxCounter = Math.pow(16, this.discriminatorLength) - 1;
-    // console.log(`this: `, JSON.stringify(this, null, 2));
   }
 
   generate(): string {
     let uniqueId = "";
     // Get current timestamp in milliseconds
     const timestamp = new Date().getTime();
-    // Convert the timestamp and discriminator to hexadecimal strings
+    // Convert the timestamp to hexadecimal strings
     const timestampHex = timestamp.toString(16);
-    // Get the discriminator value
     // Pad the hexadecimal strings with leading zeros to ensure fixed length
     const paddedTimestampHex = timestampHex.padStart(this.timestampLength, "0");
 
+    // Get the discriminator value
     if (this.hasDiscriminator) {
       const discriminator = this.timestampLength > 0 ? this.getDiscriminator(timestamp) : 0;
 
@@ -48,10 +45,12 @@ export class IdGenerator {
         return this.generate();
       }
 
+      // Convert the discriminator to hexadecimal strings
       const discriminatorHex = discriminator.toString(16);
+      // Pad the hexadecimal strings with leading zeros to ensure fixed length
       const paddedDiscriminatorHex = discriminatorHex.padStart(this.discriminatorLength, "0");
-      uniqueId = paddedTimestampHex + paddedDiscriminatorHex;
       // Concatenate the padded hexadecimal strings
+      uniqueId = paddedTimestampHex + paddedDiscriminatorHex;
     } else {
       uniqueId = paddedTimestampHex;
     }

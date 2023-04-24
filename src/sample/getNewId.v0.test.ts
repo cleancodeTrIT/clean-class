@@ -134,7 +134,6 @@ describe("The IdGenerator ", () => {
       console.log(`Time: ${end - start} ms`);
     });
   });
-  // selecting different length of the id
   describe("with a new instance and different length", () => {
     test("returns a string", () => {
       const uniqueId = new IdGenerator(11).generate();
