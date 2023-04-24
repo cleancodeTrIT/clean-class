@@ -1,11 +1,11 @@
-# Clean Code course material
+# Clean Code Class material
 
-Demo project and documentation for the Clean Code course.
+Demo project and documentation for the Clean Code Class.
 
 > Clone, fork or use as a template repository for practicing.
 
 ```bash
-git clone https://github.com/AlbertoBasalo/clean-code your-project
+git clone https://github.com/cleancodeTrIT/clean-class your-project
 cd your-project
 npm install
 ```

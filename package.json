@@ -1,20 +1,20 @@
 {
-  "name": "clean-dev",
+  "name": "clean-dev-class",
   "version": "2023.5.0",
-  "description": "Clean Code course material (demo and docs)",
+  "description": "Clean Code Class material (demo and docs)",
   "author": {
     "name": "Alberto Basalo",
     "email": "albertobasalo@hotmail.com",
     "url": "https://albertobasalo.dev"
   },
-  "homepage": "https://github.com/AlbertoBasalo/clean-dev#readme",
+  "homepage": "https://github.com/cleancodeTrIT/clean-class#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlbertoBasalo/clean-dev.git"
+    "url": "git+https://github.com/cleancodeTrIT/clean-class.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AlbertoBasalo/clean-dev/issues"
+    "url": "https://github.com/cleancodeTrIT/clean-class/issues"
   },
   "scripts": {
     "prestart": "npm run build",
