@@ -167,5 +167,23 @@ describe("The IdGenerator ", () => {
         new IdGenerator(10).generate();
       }).toThrow();
     });
+    test("prints 50 small unique identifiers", () => {
+      const uniqueIds = new Set<string>();
+      const base = 12;
+      for (let i = 0; i < 50; i++) {
+        const uniqueId = new IdGenerator(base).generate();
+        expect(uniqueIds).not.toContain(uniqueId);
+        uniqueIds.add(uniqueId);
+      }
+      const discriminators: number[] = [];
+      uniqueIds.forEach((id) => {
+        const dHex: string = id.slice(-2);
+        const d = parseInt(dHex, 16);
+        if (d >= 16) {
+          discriminators.push(d);
+        }
+      });
+      console.log(discriminators);
+    });
   });
 });
