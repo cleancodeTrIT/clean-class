@@ -8,7 +8,6 @@
  */
 export class IdGenerator {
   private static discriminator = -1;
-  private static lastTimestamp = 0;
   private static currentTimestamp = 0;
   private static readonly TIMESTAMP_MIN_LENGTH = 11;
   private static readonly BASE = 16;
@@ -55,7 +54,13 @@ export class IdGenerator {
     this.discriminatorLength = totalLength - IdGenerator.TIMESTAMP_MIN_LENGTH;
     this.hasDiscriminator = this.discriminatorLength > 0;
     this.timestampLength = totalLength - this.discriminatorLength;
-    this.maxDiscriminator = Math.pow(IdGenerator.BASE, this.discriminatorLength) - 1;
+    this.maxDiscriminator = this.calculateMaxDiscriminator();
+  }
+
+  private calculateMaxDiscriminator(): number {
+    const totalDifferentValues = Math.pow(IdGenerator.BASE, this.discriminatorLength);
+    const maxDiscriminator = totalDifferentValues - 1;
+    return maxDiscriminator;
   }
 
   private getPaddedBaseTimestamp() {
@@ -65,7 +70,7 @@ export class IdGenerator {
   }
 
   private getPaddedBaseDiscriminator(): string {
-    if (this.hasDiscriminator === false) return "";
+    if (!this.hasDiscriminator) return "";
     const discriminator = this.getDiscriminator();
     const paddedDiscriminatorHex = this.transformToPaddedBase(discriminator, this.discriminatorLength);
     return paddedDiscriminatorHex;
@@ -79,12 +84,19 @@ export class IdGenerator {
 
   private getTimestamp(): number {
     const timestamp = new Date().getTime();
-    if (IdGenerator.currentTimestamp !== timestamp) {
-      IdGenerator.lastTimestamp = IdGenerator.currentTimestamp;
-      IdGenerator.currentTimestamp = timestamp;
-      IdGenerator.discriminator = -1;
+    if (this.isNewTimestamp(timestamp)) {
+      this.resetDiscriminator(timestamp);
     }
     return timestamp;
+  }
+
+  private resetDiscriminator(timestamp: number) {
+    IdGenerator.currentTimestamp = timestamp;
+    IdGenerator.discriminator = -1;
+  }
+
+  private isNewTimestamp(timestamp: number) {
+    return IdGenerator.currentTimestamp !== timestamp;
   }
 
   private getDiscriminator(): number {
