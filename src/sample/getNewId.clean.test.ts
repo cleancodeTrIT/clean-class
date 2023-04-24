@@ -1,4 +1,4 @@
-import { IdGenerator } from "./getNewId.v0";
+import { IdGenerator } from "./getNewId.clean";
 
 describe("The IdGenerator ", () => {
   describe("with the same instance", () => {
