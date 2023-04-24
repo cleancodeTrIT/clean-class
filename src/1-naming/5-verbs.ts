@@ -10,11 +10,11 @@ class Client {}
 // }
 
 // ✅
-function createClient() {
+function createClient(): object {
   // 😏 a verb in a function tells what she does
   return new Client();
 }
-function isAllowed() {
+function isAllowed(): boolean {
   // 😏 is, has, can, must... help reading and understanding
   return true;
 }
